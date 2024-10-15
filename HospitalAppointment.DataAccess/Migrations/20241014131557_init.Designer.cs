@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalAppointment.DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20241014104347_init")]
+    [Migration("20241014131557_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -40,13 +40,8 @@ namespace HospitalAppointment.DataAccess.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("PatientName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -55,9 +50,7 @@ namespace HospitalAppointment.DataAccess.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.HasIndex("DoctorId1");
-
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("HospitalAppointment.Models.Entities.Doctor", b =>
@@ -75,29 +68,21 @@ namespace HospitalAppointment.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctors", (string)null);
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("HospitalAppointment.Models.Entities.Appointment", b =>
                 {
-                    b.HasOne("HospitalAppointment.Models.Entities.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HospitalAppointment.Models.Entities.Doctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId1")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
